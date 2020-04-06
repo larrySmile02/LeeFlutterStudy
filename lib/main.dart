@@ -1,6 +1,20 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
-void main() => runApp(MyApp());
+import 'package:flutter/material.dart';
+import 'package:videoplayer/testlib.dart';
+
+void main() => runApp(widgetForRout(window.defaultRouteName));
+
+Widget widgetForRout(String rout){
+
+  switch(rout){
+    case "sign":
+      return libApp();
+    default:
+      return MyApp();
+  }
+
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -18,9 +32,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Video player'),
     );
   }
 }
@@ -92,17 +106,18 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+              'Touch button to next page',
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed:(){
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context){
+                return libApp();
+              }));
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
