@@ -41,25 +41,68 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    if (!isLib) {
+        signingConfigs {
+            release {
+                keyAlias 'leevideo'
+                keyPassword 'lee123!'
+                storePassword 'lee123!'
+                storeFile file('leevideo.jks')
+                v1SigningEnabled true
+                v2SigningEnabled true
+            }
+
+            debug {
+                keyAlias 'leevideo'
+                keyPassword 'lee123!'
+                storePassword 'lee123!'
+                storeFile file('leevideo.jks')
+                v1SigningEnabled true
+                v2SigningEnabled true
+            }
+
+        }
+
+        buildTypes {
+            release {
+                // TODO: Add your own signing config for the release build.
+                // Signing with the debug keys for now, so `flutter run --release` works.
+                signingConfig signingConfigs.release
+                minifyEnabled false
+                useProguard false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+            debug {
+                minifyEnabled false
+                zipAlignEnabled false
+                shrinkResources false
+                debuggable = true
+            }
+        }
+    }
 
     defaultConfig {
-        if(!isLib){
+        if (!isLib) {
             applicationId "com.lee.videoplayer"
+            versionCode 1
+            versionName "1.0"
         }
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
+
 }
 
 flutter {
@@ -67,6 +110,7 @@ flutter {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
@@ -75,8 +119,6 @@ dependencies {
     if (isLib) {
         embed "io.flutter:armeabi_v7a_debug:1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408"
         embed "io.flutter:arm64_v8a_debug:1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408"
-        embed "io.flutter:x86_debug:1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408"
-        embed "io.flutter:x86_64_debug:1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408"
         embed "io.flutter:flutter_embedding_debug:1.0.0-af51afceb8886cc11e25047523c4e0c7e1f5d408"
     }
 }
